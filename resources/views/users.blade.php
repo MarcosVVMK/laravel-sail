@@ -6,7 +6,7 @@
 
     <ul>
         @foreach( $users as $user )
-            <li> {{ $user->firstName }} | {{ $user->lastName  }} </li>
+            <li> {{ $user->name }}  |  <a href=""> Edit </a> | <a href=""> Delete </a> </li>
         @endforeach
     </ul>
 
