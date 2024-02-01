@@ -7,13 +7,19 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public readonly  User $user;
+
+    public function __construct()
+    {
+        $this->user = new User();
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $users = User::all();
+        $users = $this->user->all();
 
         return view('users', ['users' => $users ]);
     }
@@ -56,7 +62,13 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        var_dump($id);
+       $update = $this->user->where('id', $id )->update( $request->except([ '_token', '_method' ]));
+
+       if ( $update ){
+           return redirect()->back()->with('message', 'Successfully updated!');
+       }
+
+       return redirect()->back()->with('message', 'Error update!');
     }
 
     /**
