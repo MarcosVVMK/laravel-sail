@@ -37,10 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $current_date = gmdate( 'Y-m-d h:i:s' );
+
         $store = $this->user->create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => password_hash( $request->input('password'), PASSWORD_DEFAULT ),
+            'email_verified_at' => $current_date,
+            'remeber_token' => '1',
+            'created_at' => $current_date,
+            'updated_at' => $current_date,
         ]);
 
         if ( $store ){
@@ -53,9 +60,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(user $user): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        return view('user_show', ['user' => $user ]);
     }
 
     /**
@@ -70,7 +77,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): \Illuminate\Http\RedirectResponse
     {
        $update = $this->user->where('id', $id )->update( $request->except([ '_token', '_method' ]));
 
