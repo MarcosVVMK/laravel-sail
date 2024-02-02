@@ -70,7 +70,6 @@ class UserController extends Controller
      */
     public function edit(User $user): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-
         return view('user_edit', ['user' => $user ]);
     }
 
@@ -93,6 +92,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->user->where('id', $id)->delete();
+
+        return redirect()->route('users.index');
     }
 }
